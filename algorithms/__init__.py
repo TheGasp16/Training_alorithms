@@ -1,3 +1,5 @@
+"""Expose les differentes variantes d'enveloppe convexe implantees."""
+
 from .monotone import enveloppe_monotone
 from .quickhull import enveloppe_quickhull
 from .graham import enveloppe_graham
