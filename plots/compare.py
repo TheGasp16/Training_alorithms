@@ -1,6 +1,7 @@
 """Fonctions de visualisation des performances et des enveloppes convexes."""
 
 import math
+import re
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -9,14 +10,22 @@ OUTPUT_DIR = Path("plots") / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def _slugify(name):
+    """Transforme un nom libre en segment de fichier simple."""
+    slug = name.lower().strip()
+    slug = re.sub(r"\s+", "_", slug)
+    slug = re.sub(r"[^a-z0-9_-]", "", slug)
+    return slug or "algo"
+
+
 def plot_temps(tailles, temps, algos):
-    """1/cree figure 2/trace courbes log-log 3/sauvegarde dans plots/output."""
+    """Trace les temps en échelle linéaire et enregistre les figures."""
     fig, ax = plt.subplots(figsize=(8, 6))
     for nom, _ in algos:
         ax.plot(tailles, temps[nom], marker="o", label=nom)
-    ax.set_xscale("log")
-    ax.set_yscale("log")
-    ax.set_title("Comparaison des temps d'execution (log-log)")
+    ax.set_xscale("linear")
+    ax.set_yscale("linear")
+    ax.set_title("Comparaison des temps d'execution")
     ax.set_xlabel("Nombre de points")
     ax.set_ylabel("Temps (ms)")
     ax.grid(True, which="both", linestyle="--", alpha=0.5)
@@ -25,6 +34,21 @@ def plot_temps(tailles, temps, algos):
     fig.tight_layout()
     fig.savefig(output, dpi=150)
     plt.close(fig)
+
+    # Génère une figure par algorithme pour faciliter la comparaison.
+    for nom, _ in algos:
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.plot(tailles, temps[nom], marker="o", color="tab:blue")
+        ax.set_title(f"Temps d'execution - {nom}")
+        ax.set_xlabel("Nombre de points")
+        ax.set_ylabel("Temps (ms)")
+        ax.set_xscale("linear")
+        ax.set_yscale("linear")
+        ax.grid(True, linestyle="--", alpha=0.5)
+        output = OUTPUT_DIR / f"temps_{_slugify(nom)}.png"
+        fig.tight_layout()
+        fig.savefig(output, dpi=150)
+        plt.close(fig)
 
 
 def plot_hulls(points, algos):
