@@ -13,7 +13,7 @@ from plots.compare import plot_temps, plot_hulls
 
 
 def main():
-    tailles = [100, 500, 1000, 2000, 5000]
+    tailles = [10 + i*100 for i in range(100)]  # Tailles de 10 a 910 points.
     algos = [
         ("Monotone Chain", enveloppe_monotone),
         ("QuickHull", enveloppe_quickhull),
