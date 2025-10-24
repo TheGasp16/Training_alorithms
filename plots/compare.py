@@ -89,3 +89,17 @@ def plot_hulls(points, algos):
     output = OUTPUT_DIR / "comparaison_enveloppes.png"
     fig.savefig(output, dpi=150)
     plt.close(fig)
+
+
+def plot_merge_thresholds(seuils, temps, n_points):
+    """Trace le temps d'execution de Merge Hull en fonction du seuil."""
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot(seuils, temps, marker="o", color="tab:orange")
+    ax.set_title(f"Impact du seuil sur Merge Hull (n={n_points})")
+    ax.set_xlabel("Seuil (taille maximale du sous-probleme)")
+    ax.set_ylabel("Temps median (ms)")
+    ax.grid(True, linestyle="--", alpha=0.5)
+    output = OUTPUT_DIR / "merge_hull_seuils.png"
+    fig.tight_layout()
+    fig.savefig(output, dpi=150)
+    plt.close(fig)
