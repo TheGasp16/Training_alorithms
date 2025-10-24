@@ -26,12 +26,12 @@ def nuage(n, xmin=-10, xmax=10, ymin=-10, ymax=10):
     return [[rd.uniform(xmin, xmax), rd.uniform(ymin, ymax)] for _ in range(n)]
 
 
-def benchmark(func, points, repeat=3):
-    """Evalue un algorithme: 1/start timer 2/rejoue repeat fois 3/retour median."""
+def benchmark(func, points, repeat=5):
+    """Evalue un algorithme: moyenne du temps sur repeat executions."""
     times = []
     for _ in range(repeat):
         start = t.time()
         enveloppe = func(points)
         times.append((t.time() - start) * 1000)
-    elapsed = stats.median(times)
+    elapsed = stats.mean(times)
     return elapsed, len(enveloppe)

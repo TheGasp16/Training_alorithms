@@ -22,7 +22,7 @@ from plots.compare import plot_temps, plot_hulls as plot_enveloppes, plot_merge_
 
 def main():
     
-    tailles = [10 + i*100 for i in range(100)]  # Tailles de 10 a 910 points.
+    tailles = [10 + i*200 for i in range(100)]  
     algos = [
         ("Monotone Chain", enveloppe_monotone),
         ("QuickHull", enveloppe_quickhull),
