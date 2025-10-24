@@ -3,30 +3,35 @@
 import math as m
 from utils import cross, area_signed
 
-
-def enveloppe_quickhull(points):
-    """1/pivots extremes 2/separation 3/recherche point le plus lointain 4/fusion."""
-
-    def det(A, B, C):
+def det(A, B, C):
         return (A[0] - B[0]) * (C[1] - B[1]) - (A[1] - B[1]) * (C[0] - B[0])
 
-    def farthest(A, B, pts):
-        # Cherche le point qui maximise la distance orientee a la droite AB.
-        best, dmax = None, 0
-        for p in pts:
-            d = abs(det(A, B, p))
-            if d > dmax:
-                best, dmax = p, d
-        return best
+def farthest(A, B, pts):
+    # Cherche le point qui maximise la distance orientee a la droite AB.
+    best, dmax = None, 0
+    for p in pts:
+        d = abs(det(A, B, p))
+        if d > dmax:
+            best, dmax = p, d
+    return best
 
-    def recurse(A, B, pts):
-        # Portionne recursivement le demi-plan (AB) par le point le plus lointain.
-        pmax = farthest(A, B, pts)
-        if not pmax:
-            return []
-        left1 = [p for p in pts if det(A, pmax, p) > 0]
-        left2 = [p for p in pts if det(pmax, B, p) > 0]
-        return recurse(A, pmax, left1) + [pmax] + recurse(pmax, B, left2)
+def recurse(A, B, pts):
+    # Portionne recursivement le demi-plan (AB) par le point le plus lointain.
+    pmax = farthest(A, B, pts)
+    if not pmax:
+        return []
+    left1 = [p for p in pts if det(A, pmax, p) > 0]
+    left2 = [p for p in pts if det(pmax, B, p) > 0]
+    return recurse(A, pmax, left1) + [pmax] + recurse(pmax, B, left2)
+
+    
+
+def enveloppe_quickhull(points):
+    """
+    1/pivots extremes 
+    2/separation 
+    3/recherche point le plus lointain 
+    4/fusion."""
 
     if len(points) < 3:
         return points

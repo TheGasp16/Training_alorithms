@@ -14,10 +14,10 @@ def merge_hull(points, seuil=64):
     mid = len(pts) // 2
     left = merge_hull(pts[:mid])
     right = merge_hull(pts[mid:])
-    return _fusion(left, right)
+    return fusion(left, right)
 
 
-def _fusion(left, right):
+def fusion(left, right):
     """Recalcule l'enveloppe monotone sur la reunion des sommets partiels."""
     merged = {tuple(p) for p in left + right}
     enveloppe = enveloppe_monotone(list(merged))
