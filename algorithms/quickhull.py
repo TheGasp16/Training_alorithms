@@ -37,11 +37,11 @@ def enveloppe_quickhull(points):
     left = [p for p in points if det(A, B, p) > 0]
     right = [p for p in points if det(A, B, p) < 0]
 
-    hull = [A] + recurse(A, B, left) + [B] + recurse(B, A, right)
+    enveloppe = [A] + recurse(A, B, left) + [B] + recurse(B, A, right)
 
     # Tri final pour eviter les croisements lors de l'affichage.
-    cx, cy = sum(p[0] for p in hull) / len(hull), sum(p[1] for p in hull) / len(hull)
-    hull = sorted(hull, key=lambda p: m.atan2(p[1] - cy, p[0] - cx))
-    if area_signed(hull) < 0:
-        hull.reverse()
-    return hull
+    cx, cy = sum(p[0] for p in enveloppe) / len(enveloppe), sum(p[1] for p in enveloppe) / len(enveloppe)
+    enveloppe = sorted(enveloppe, key=lambda p: m.atan2(p[1] - cy, p[0] - cx))
+    if area_signed(enveloppe) < 0:
+        enveloppe.reverse()
+    return enveloppe

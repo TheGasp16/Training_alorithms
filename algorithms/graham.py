@@ -11,10 +11,10 @@ def enveloppe_graham(points):
     # Trie les points restants par angle polaire autour du pivot choisi.
     sorted_pts = sorted(P[1:], key=lambda p: m.atan2(p[1] - pivot[1], p[0] - pivot[0]))
 
-    hull = [pivot, sorted_pts[0]]
+    enveloppe = [pivot, sorted_pts[0]]
     for p in sorted_pts[1:]:
         # Tant que l'on forme un virage a droite, on depile le sommet courant.
-        while len(hull) >= 2 and cross(hull[-2], hull[-1], p) <= 0:
-            hull.pop()
-        hull.append(p)
-    return hull
+        while len(enveloppe) >= 2 and cross(enveloppe[-2], enveloppe[-1], p) <= 0:
+            enveloppe.pop()
+        enveloppe.append(p)
+    return enveloppe

@@ -24,8 +24,8 @@ def enveloppe_monotone(points):
             upper.pop()
         upper.append(p)
 
-    hull = lower[:-1] + upper[:-1]
+    enveloppe = lower[:-1] + upper[:-1]
     # Reoriente le polygone en sens anti-horaire si besoin.
-    if area_signed(hull) < 0:
-        hull.reverse()
-    return hull
+    if area_signed(enveloppe) < 0:
+        enveloppe.reverse()
+    return enveloppe

@@ -20,7 +20,7 @@ def merge_hull(points, seuil=64):
 def _fusion(left, right):
     """Recalcule l'enveloppe monotone sur la reunion des sommets partiels."""
     merged = {tuple(p) for p in left + right}
-    hull = enveloppe_monotone(list(merged))
-    if len(hull) > 2 and area_signed(hull) < 0:
-        hull.reverse()
-    return hull
+    enveloppe = enveloppe_monotone(list(merged))
+    if len(enveloppe) > 2 and area_signed(enveloppe) < 0:
+        enveloppe.reverse()
+    return enveloppe

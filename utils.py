@@ -31,7 +31,7 @@ def benchmark(func, points, repeat=3):
     times = []
     for _ in range(repeat):
         start = t.time()
-        hull = func(points)
+        enveloppe = func(points)
         times.append((t.time() - start) * 1000)
     elapsed = stats.median(times)
-    return elapsed, len(hull)
+    return elapsed, len(enveloppe)

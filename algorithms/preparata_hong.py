@@ -21,11 +21,11 @@ def preparata_hong(points, seuil=32):
     if len(pts) <= seuil:
         return enveloppe_monotone(pts)
 
-    hull = _divide(pts, seuil)
-    if len(hull) > 2 and area_signed(hull) < 0:
+    enveloppe = _divide(pts, seuil)
+    if len(enveloppe) > 2 and area_signed(enveloppe) < 0:
         # Assure une sortie en sens anti-horaire quel que soit le chemin recursif.
-        hull.reverse()
-    return hull
+        enveloppe.reverse()
+    return enveloppe
 
 
 def _divide(pts, seuil):
@@ -144,11 +144,11 @@ def _orient_sign(a, b, c):
     return 1 if val > 0 else -1
 
 
-def _rightmost_index(hull):
+def _rightmost_index(enveloppe):
     """Renvoie l'indice du point le plus a droite (x max, puis y max)."""
-    return max(range(len(hull)), key=lambda k: (hull[k][0], hull[k][1]))
+    return max(range(len(enveloppe)), key=lambda k: (enveloppe[k][0], enveloppe[k][1]))
 
 
-def _leftmost_index(hull):
+def _leftmost_index(enveloppe):
     """Renvoie l'indice du point le plus a gauche (x min, puis y min)."""
-    return min(range(len(hull)), key=lambda k: (hull[k][0], hull[k][1]))
+    return min(range(len(enveloppe)), key=lambda k: (enveloppe[k][0], enveloppe[k][1]))

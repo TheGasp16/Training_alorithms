@@ -10,8 +10,14 @@ Etapes clefs de l'experience:
 from functools import partial
 
 from utils import nuage, benchmark
-from algorithms import *
-from plots.compare import plot_temps, plot_hulls, plot_merge_thresholds
+from algorithms import (
+    enveloppe_monotone,
+    enveloppe_quickhull,
+    enveloppe_graham,
+    merge_hull as merge_enveloppe,
+    preparata_hong,
+)
+from plots.compare import plot_temps, plot_hulls as plot_enveloppes, plot_merge_thresholds
 
 
 def main():
@@ -21,7 +27,7 @@ def main():
         ("Monotone Chain", enveloppe_monotone),
         ("QuickHull", enveloppe_quickhull),
         ("Graham Scan", enveloppe_graham),
-        ("Merge Hull", merge_hull),
+        ("Merge enveloppe", merge_enveloppe),
         ("Preparata-Hong", preparata_hong)
     ]
 
@@ -40,13 +46,13 @@ def main():
 
     plot_temps(tailles, temps, algos)
     
-    #Analyse specifique de Merge Hull: impact du seuil de division sur un nuage fixe.
+    #Analyse specifique de Merge enveloppe: impact du seuil de division sur un nuage fixe.
     seuils = [i for i in range(1, 101, 2)]
     E_merge = nuage(6000)
     temps_merge = []
-    print("\n=== IMPACT DU SEUIL SUR MERGE HULL (nuage fixe) ===")
+    print("\n=== IMPACT DU SEUIL SUR MERGE enveloppe (nuage fixe) ===")
     for seuil in seuils:
-        f_merge = partial(merge_hull, seuil=seuil)
+        f_merge = partial(merge_enveloppe, seuil=seuil)
         tps, nsom = benchmark(f_merge, E_merge)
         temps_merge.append(tps)
         #print(f"seuil={seuil:<3d} | sommets={nsom:3d} | temps={tps:7.2f} ms")
@@ -54,7 +60,7 @@ def main():
 
     # Visualisation finale: toutes les enveloppes d'un meme nuage pour comparer.
     E = nuage(800)
-    plot_hulls(E, algos)
+    plot_enveloppes(E, algos)
 
 
 if __name__ == "__main__":
